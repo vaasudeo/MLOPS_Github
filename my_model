@@ -1,54 +1,44 @@
 @app.route('/api/test', methods=['GET'])
 def test():
+  //  #Creating array for input testing
+      a=[14,3,2.8,25,100,2,1,0.5,1.5,8,0.8,1.5,850]
+  //
+   
    print("Hello world!Python model works!") 
 
-# Import modules for CGI handling 
+   import pandas as pd
+   import numpy as np
+   from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+   from sklearn import datasets
+   import matplotlib.pyplot as plt
+   get_ipython().run_line_magic('matplotlib', 'inline')
 
-import cgi, cgitb 
+   filename = 'C:/Users/vaasu/OneDrive/Desktop/Term 6/wine.xlsx'
+   df = pd.read_excel(filename)
 
-# Get data from fields 
+   X = df.iloc[:, 0:13].values
+   y = df.iloc[:, 13].values
 
-input1 = form.getvalue('input1')
-input2 = form.getvalue('input2')
-input3 = form.getvalue('input3')
-input4 = form.getvalue('input4')
-input5 = form.getvalue('input5')
-input6 = form.getvalue('input6')
+   # fitting the LDA model
+      lda = LDA(n_components=2)
+      lda_X = lda.fit(X,y).transform(X)
 
+      plt.scatter(lda_X[y == 1, 0], lda_X[y == 1, 1], s =80, c = 'orange', label = 'Type 0')
+      plt.scatter(lda_X[y == 2, 0], lda_X[y == 2, 1], s =80,  c = 'yellow', label = 'Type 1')
+      plt.scatter(lda_X[y == 3, 0], lda_X[y == 3, 1], s =80,  c = 'green', label = 'Type 2')
+      plt.title('LDA plot for Wine Dataset')
+      plt.legend()
 
-import pandas as pd
-import numpy as np
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-from sklearn import datasets
-import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
+   # Splitting the dataset into the Training set and Test set
+      from sklearn.model_selection import train_test_split
+      X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
-filename = 'C:/Users/vaasu/OneDrive/Desktop/Term 6/wine.xlsx'
-df = pd.read_excel(filename)
-
-X = df.iloc[:, 0:13].values
-y = df.iloc[:, 13].values
-
-# fitting the LDA model
-lda = LDA(n_components=2)
-lda_X = lda.fit(X,y).transform(X)
-
-plt.scatter(lda_X[y == 1, 0], lda_X[y == 1, 1], s =80, c = 'orange', label = 'Type 0')
-plt.scatter(lda_X[y == 2, 0], lda_X[y == 2, 1], s =80,  c = 'yellow', label = 'Type 1')
-plt.scatter(lda_X[y == 3, 0], lda_X[y == 3, 1], s =80,  c = 'green', label = 'Type 2')
-plt.title('LDA plot for Wine Dataset')
-plt.legend()
-
-# Splitting the dataset into the Training set and Test set
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
-
-# Feature Scaling
-from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
-print(X_train.shape,X_test.shape)
+   # Feature Scaling
+      from sklearn.preprocessing import StandardScaler
+      sc = StandardScaler()
+      X_train = sc.fit_transform(X_train)
+      X_test = sc.transform(X_test)
+      print(X_train.shape,X_test.shape)
 
 # Applying LDA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA

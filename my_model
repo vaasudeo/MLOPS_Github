@@ -1,6 +1,7 @@
-@app.route('/api/test', methods=['GET'])
+@app.route('http://0.0.0.0:8080/api/todos', methods=['GET'])
 def test():
-  //  #Creating array for input testing
+ 
+ //  #Creating array for input testing
       a=[14,3,2.8,25,100,2,1,0.5,1.5,8,0.8,1.5,850]
   //
    
@@ -113,6 +114,8 @@ a_lda=lda.transform(a_scaled)
 prediction= classifier.predict(a_lda)
 
 prediction
+
+     response = {'message': 'API hit iimv'}
 
     # encode response using jsonpickle
     response_pickled = jsonpickle.encode(response)
